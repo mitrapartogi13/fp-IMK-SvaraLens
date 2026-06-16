@@ -14,7 +14,7 @@ type Tab = {
 
 const TABS: Tab[] = [
   { key: "dokumen", label: "DOKUMEN", href: "/dokumen", match: "/dokumen", Icon: DocumentIcon },
-  { key: "obat", label: "OBAT", href: "/obat", match: "/obat", Icon: PillIcon },
+  { key: "obat",    label: "OBAT",    href: "/obat",    match: "/obat",    Icon: PillIcon },
   { key: "kemasan", label: "KEMASAN", href: "/kemasan", match: "/kemasan", Icon: PackageIcon },
 ];
 
@@ -22,8 +22,9 @@ const TABS: Tab[] = [
 const HIDDEN_ON = ["/", "/splash", "/tutorial", "/pengaturan", "/dokumen/voice-search"];
 
 /**
- * Global bottom tab bar. Active tab is derived from the current route and is
- * filled solid yellow with a black icon + label.
+ * Global bottom tab bar — brutalist style with thick top border and crisp
+ * vertical dividers between columns. Active tab is rendered with a solid
+ * yellow background. /beranda shows the bar but doesn't mark any tab active.
  */
 export default function BottomNav() {
   const pathname = usePathname();
@@ -33,9 +34,9 @@ export default function BottomNav() {
   return (
     <nav
       aria-label="Navigasi utama"
-      className="sticky bottom-0 z-30 grid grid-cols-3 border-t-2 border-line bg-paper"
+      className="sticky bottom-0 z-30 grid grid-cols-3 border-t-[3px] border-line bg-paper"
     >
-      {TABS.map(({ key, label, href, match, Icon }) => {
+      {TABS.map(({ key, label, href, match, Icon }, i) => {
         const isActive =
           pathname === match || pathname.startsWith(`${match}/`);
         return (
@@ -43,12 +44,15 @@ export default function BottomNav() {
             key={key}
             href={href}
             aria-current={isActive ? "page" : undefined}
-            className={`flex min-h-[84px] flex-col items-center justify-center gap-1.5 py-3 transition-colors ${
-              isActive ? "bg-primary text-black" : "bg-paper text-gray-inactive"
-            }`}
+            aria-label={label}
+            className={[
+              "flex min-h-[88px] flex-col items-center justify-center gap-1.5 py-3 transition-colors",
+              i > 0 ? "border-l-[3px] border-line" : "",
+              isActive ? "bg-primary text-ink" : "bg-paper text-ink",
+            ].join(" ")}
           >
-            <Icon className="text-[28px]" />
-            <span className="text-sm font-extrabold tracking-wide">{label}</span>
+            <Icon className="text-[30px]" strokeWidth={2.4} />
+            <span className="text-sm font-black tracking-wide">{label}</span>
           </Link>
         );
       })}

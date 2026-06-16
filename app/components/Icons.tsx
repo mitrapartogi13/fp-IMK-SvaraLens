@@ -274,3 +274,83 @@ export function PinchGestureIcon(props: IconProps) {
     </svg>
   );
 }
+
+/* ---- Brutalist gesture/UI icons ---- */
+
+/** Friendly waving / open hand. Used in dashboard tip bar. */
+export function HandWaveIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} strokeWidth={2.4}>
+      <path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11" />
+      <path d="M12 11V4.5a1.5 1.5 0 0 1 3 0V11" />
+      <path d="M15 11V6a1.5 1.5 0 0 1 3 0v8a6 6 0 0 1-6 6h-1a6 6 0 0 1-5.2-3l-2.3-4a1.5 1.5 0 0 1 2.6-1.5L8 13.5V8a1.5 1.5 0 0 1 3 0v3" />
+    </svg>
+  );
+}
+
+/**
+ * Swipe gesture: a hand with arrows pointing left/right around it.
+ * Designed to be displayed at very large size in the tutorial illustration.
+ */
+export function SwipeHandIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} strokeWidth={2.2}>
+      {/* Curved swipe motion arc above the hand */}
+      <path d="M7 7a5.5 5.5 0 0 1 10 0" />
+      <path d="M5.5 7 7 5.5 8.5 7" />
+      <path d="M18.5 7 17 5.5 15.5 7" />
+      {/* Hand silhouette */}
+      <path d="M10.5 10.5v3" />
+      <path d="M13 9.5v4" />
+      <path d="M15.5 10v3.5" />
+      <path d="M8 13.5v-2.5a1.2 1.2 0 0 1 2.4 0" />
+      <path d="M8 13.5v3a4 4 0 0 0 4 4h2a4 4 0 0 0 4-4v-3.5" />
+    </svg>
+  );
+}
+
+/** Double-tap: hand pointing index finger down with two ripple rings. */
+export function DoubleTapIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} strokeWidth={2.2}>
+      {/* Ripple rings */}
+      <circle cx="12" cy="8" r="3.5" />
+      <circle cx="12" cy="8" r="6.5" strokeDasharray="2 2" />
+      {/* Hand */}
+      <path d="M12 11.5v5" />
+      <path d="M12 16.5l-1.6-1a1.4 1.4 0 0 0-1.9 1.9l1.7 2.4a4 4 0 0 0 3.3 1.7H15a4 4 0 0 0 4-4v-3a1.6 1.6 0 0 0-3.2 0M15.8 14.5v-1a1.6 1.6 0 0 0-3.2 0" />
+    </svg>
+  );
+}
+
+/** Big bold checkmark — for "selesai" success state. */
+export function BigCheckIcon(props: IconProps) {
+  return (
+    <svg {...base(props)} strokeWidth={3.2}>
+      <path d="m5 12.5 5 5 9-11" />
+    </svg>
+  );
+}
+
+/** 7-bar audio waveform — used for the splash audio visualizer. */
+export function AudioBarsIcon(props: IconProps) {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 56 32"
+      fill="currentColor"
+      aria-hidden
+      focusable={false}
+      {...props}
+    >
+      <rect x="0"  y="11" width="6" height="10" rx="3" />
+      <rect x="8"  y="7"  width="6" height="18" rx="3" />
+      <rect x="16" y="3"  width="6" height="26" rx="3" />
+      <rect x="24" y="0"  width="6" height="32" rx="3" />
+      <rect x="32" y="3"  width="6" height="26" rx="3" />
+      <rect x="40" y="7"  width="6" height="18" rx="3" />
+      <rect x="48" y="11" width="6" height="10" rx="3" />
+    </svg>
+  );
+}

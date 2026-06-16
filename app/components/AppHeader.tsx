@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { BackIcon, SettingsIcon } from "./Icons";
 
 /**
- * Top app bar: optional back arrow (goes to the previous page), centered
- * title, and an optional gear that always links to /pengaturan.
+ * Top app bar — brutalist style. Optional back arrow (previous page), centered
+ * title, and an optional gear icon that always links to /pengaturan.
  */
 export default function AppHeader({
   title,
@@ -22,25 +22,25 @@ export default function AppHeader({
   const router = useRouter();
 
   return (
-    <header className="flex items-center justify-between gap-2 border-b-2 border-line px-4 py-3">
+    <header className="flex items-center justify-between gap-2 border-b-[3px] border-line bg-surface px-4 py-3">
       <div className="flex w-12 shrink-0 items-center">
         {showBack &&
           (backHref ? (
             <Link
               href={backHref}
               aria-label="Kembali"
-              className="flex size-12 items-center justify-center rounded-full text-[26px] text-ink hover:bg-surface"
+              className="flex size-12 items-center justify-center rounded-md text-[28px] text-ink hover:bg-paper"
             >
-              <BackIcon />
+              <BackIcon strokeWidth={2.6} />
             </Link>
           ) : (
             <button
               type="button"
               onClick={() => router.back()}
               aria-label="Kembali"
-              className="flex size-12 items-center justify-center rounded-full text-[26px] text-ink hover:bg-surface"
+              className="flex size-12 items-center justify-center rounded-md text-[28px] text-ink hover:bg-paper"
             >
-              <BackIcon />
+              <BackIcon strokeWidth={2.6} />
             </button>
           ))}
       </div>
@@ -56,9 +56,9 @@ export default function AppHeader({
           <Link
             href="/pengaturan"
             aria-label="Pengaturan"
-            className="flex size-12 items-center justify-center rounded-full text-[26px] text-ink hover:bg-surface"
+            className="flex size-12 items-center justify-center rounded-md text-[28px] text-ink hover:bg-paper"
           >
-            <SettingsIcon />
+            <SettingsIcon strokeWidth={2.6} />
           </Link>
         )}
       </div>
