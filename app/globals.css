@@ -1,26 +1,109 @@
 @import "tailwindcss";
 
+/*
+  SvaraLens design system — accessibility-first scanner with TTS.
+  Two themes (light / dark) flip CSS variables on <html>; Tailwind tokens
+  below reference those variables so utilities like `bg-paper` / `text-ink`
+  re-theme automatically.
+*/
+@theme {
+  --color-primary: #fbbf24;
+  --color-primary-press: #d99e0b;
+  --color-gray-inactive: #9ca3af;
+  --color-danger: #dc2626;
+
+  --color-paper: var(--c-paper);
+  --color-ink: var(--c-ink);
+  --color-heading: var(--c-heading);
+  --color-surface: var(--c-surface);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --c-paper: #ffffff;
+  --c-ink: #000000;
+  --c-heading: #000000;
+  --c-surface: #f4f4f5;
+  --c-muted: #6b7280;
+  --c-line: #000000;
+
+  /* Runtime font scale (80%–200%), driven by Pengaturan. */
+  --font-scale: 1;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html.dark {
+  --c-paper: #000000;
+  --c-ink: #ffffff;
+  --c-heading: #fbbf24;
+  --c-surface: #18181b;
+  --c-muted: #9ca3af;
+  --c-line: #fbbf24;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: calc(16px * var(--font-scale));
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  font-weight: 700; /* bold throughout for legibility */
+}
+
+*:focus-visible {
+  outline: 4px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+button,
+a[role="button"],
+[role="tab"] {
+  touch-action: manipulation;
+}
+
+/* ---- Animations ---- */
+@keyframes waveform {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.animate-waveform {
+  transform-origin: center;
+  animation: waveform 0.9s ease-in-out infinite;
+}
+
+@keyframes scan-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(251, 191, 36, 0);
+  }
+}
+.animate-scan-pulse {
+  animation: scan-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out both;
 }

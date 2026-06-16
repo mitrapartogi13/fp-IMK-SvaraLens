@@ -1,0 +1,96 @@
+/** Mock data for the prototype — no backend. */
+
+export type DocumentItem = {
+  id: string;
+  name: string;
+  paragraphs: string[];
+};
+
+export const DOCUMENTS: DocumentItem[] = [
+  {
+    id: "tagihan-pln",
+    name: "Surat Tagihan PLN",
+    paragraphs: [
+      "Tagihan listrik untuk periode Juni 2026. Nomor pelanggan 5321 0098 7711.",
+      "Total pemakaian sebesar 240 kilowatt jam, dengan jumlah tagihan Rp 312.500.",
+      "Batas akhir pembayaran adalah tanggal 20 Juni 2026. Mohon bayar tepat waktu untuk menghindari denda keterlambatan.",
+    ],
+  },
+  {
+    id: "ktp-john-doe",
+    name: "KTP - John Doe",
+    paragraphs: [
+      "Kartu Tanda Penduduk atas nama John Doe.",
+      "Nomor Induk Kependudukan 3174 0512 9001 0007. Tempat dan tanggal lahir Jakarta, 12 Mei 1990.",
+      "Alamat Jalan Melati Nomor 10, Kelurahan Sukamaju, Kecamatan Cilandak, Jakarta Selatan.",
+    ],
+  },
+  {
+    id: "surat-kuasa",
+    name: "Surat Kuasa",
+    paragraphs: [
+      "Surat kuasa ini dibuat pada tanggal 7 Juni 2026.",
+      "Yang bertanda tangan di bawah ini memberikan kuasa penuh kepada penerima kuasa untuk mengurus dokumen kepemilikan kendaraan bermotor.",
+      "Kuasa ini berlaku sampai seluruh proses pengurusan selesai dilaksanakan.",
+    ],
+  },
+  {
+    id: "polis-asuransi",
+    name: "Polis Asuransi",
+    paragraphs: [
+      "Polis asuransi kesehatan nomor POL 2026 4471 9.",
+      "Manfaat pertanggungan mencakup rawat inap, rawat jalan, dan tindakan operasi dengan total nilai pertanggungan Rp 250 juta per tahun.",
+      "Premi dibayarkan setiap bulan sebesar Rp 450.000, jatuh tempo pada tanggal 1 setiap bulannya.",
+    ],
+  },
+];
+
+export function getDocument(id: string) {
+  return DOCUMENTS.find((d) => d.id === id);
+}
+
+export type NutritionRow = { label: string; value: string };
+
+export type PackageItem = {
+  id: string;
+  name: string;
+  date: string;
+  nutrition: NutritionRow[];
+};
+
+export const PACKAGES: PackageItem[] = [
+  {
+    id: "ultra-milk",
+    name: "ULTRA MILK",
+    date: "Hari ini",
+    nutrition: [
+      { label: "Energi Total", value: "140 kkal" },
+      { label: "Lemak Total", value: "3.5 g" },
+      { label: "Protein", value: "6 g" },
+      { label: "Gula", value: "17 g" },
+    ],
+  },
+  {
+    id: "biskuit-gandum",
+    name: "BISKUIT GANDUM",
+    date: "Kemarin",
+    nutrition: [
+      { label: "Energi Total", value: "150 kkal" },
+      { label: "Karbohidrat", value: "18 g" },
+      { label: "Lemak Total", value: "7 g" },
+      { label: "Protein", value: "2 g" },
+    ],
+  },
+];
+
+export function getPackage(id: string) {
+  return PACKAGES.find((p) => p.id === id);
+}
+
+export function nutritionToSpeech(item: PackageItem) {
+  return (
+    `${item.name}. ` +
+    item.nutrition.map((n) => `${n.label} ${n.value}`).join(", ") +
+    "."
+  );
+}
