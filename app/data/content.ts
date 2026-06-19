@@ -58,28 +58,43 @@ export type PackageItem = {
   nutrition: NutritionRow[];
 };
 
+export type PackageItem = {
+  id: string;
+  name: string;
+  date: string;
+  /** ISO date (YYYY-MM-DD) — dipakai Kalender Riwayat untuk mencocokkan tanggal. */
+  loggedAt: string;
+  nutrition: NutritionRow[];
+  /** Pesan peringatan opsional (mis. gula melebihi batas harian). */
+  warning?: string;
+};
+
 export const PACKAGES: PackageItem[] = [
   {
     id: "ultra-milk",
     name: "ULTRA MILK",
     date: "Hari ini",
+    loggedAt: "2026-06-20",
     nutrition: [
       { label: "Energi Total", value: "140 kkal" },
       { label: "Lemak Total", value: "3.5 g" },
       { label: "Protein", value: "6 g" },
       { label: "Gula", value: "17 g" },
     ],
+    alert: { type: "warning", text: "Kadar gula tinggi!" },
   },
   {
     id: "biskuit-gandum",
     name: "BISKUIT GANDUM",
     date: "Kemarin",
+    loggedAt: "2026-06-19",
     nutrition: [
       { label: "Energi Total", value: "150 kkal" },
-      { label: "Karbohidrat", value: "18 g" },
       { label: "Lemak Total", value: "7 g" },
       { label: "Protein", value: "2 g" },
+      { label: "Gula", value: "5 g" },
     ],
+    alert: { type: "safe", text: "Kadar gula aman untuk dikonsumsi" },
   },
 ];
 
@@ -88,9 +103,10 @@ export function getPackage(id: string) {
 }
 
 export function nutritionToSpeech(item: PackageItem) {
-  return (
+  const base =
     `${item.name}. ` +
     item.nutrition.map((n) => `${n.label} ${n.value}`).join(", ") +
-    "."
-  );
+    ".";
+  return item.alert ? `${base} ${item.alert.text}` : base;
 }
+

@@ -6,15 +6,23 @@ import AppHeader from "../../components/AppHeader";
 import BacaSuaraButton from "../../components/BacaSuaraButton";
 import { CalendarIcon, MicIcon, ChevronRightIcon } from "../../components/Icons";
 import { PACKAGES, nutritionToSpeech } from "../../data/content";
+import AlertBox from "../../components/AlertBox";
+import CalendarModal from "../../components/CalendarModal";
 
 /** Riwayat Kemasan — searchable history of scanned packages. */
 export default function RiwayatKemasanPage() {
   const [query, setQuery] = useState("");
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [filterDate, setFilterDate] = useState<Date | null>(null);
 
   const trimmed = query.trim().toLowerCase();
-  const results = trimmed
-    ? PACKAGES.filter((p) => p.name.toLowerCase().includes(trimmed))
-    : PACKAGES;
+  const results = PACKAGES.filter((p) => {
+    const matchesQuery = trimmed ? p.name.toLowerCase().includes(trimmed) : true;
+    const matchesDate = filterDate
+      ? new Date(p.loggedAt).toDateString() === filterDate.toDateString()
+      : true;
+    return matchesQuery && matchesDate;
+  });
 
   return (
     <div className="flex flex-1 flex-col">
@@ -35,12 +43,29 @@ export default function RiwayatKemasanPage() {
               placeholder="Cari Kemasan..."
               className="min-w-0 flex-1 bg-transparent text-lg font-bold text-ink placeholder:text-muted focus:outline-none"
             />
-            <CalendarIcon className="text-[24px] text-muted" aria-hidden />
+            <button
+              type="button"
+              aria-label="Filter berdasarkan tanggal"
+              onClick={() => setCalendarOpen(true)}
+              className="flex size-6 shrink-0 items-center justify-center"
+            >
+              <CalendarIcon className="text-[24px] text-muted" />
+            </button>
             <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-[24px] text-black">
               <MicIcon />
             </span>
           </div>
         </div>
+
+        {filterDate && (
+          <button
+            type="button"
+            onClick={() => setFilterDate(null)}
+            className="self-start rounded-full bg-primary px-4 py-2 text-sm font-black text-black"
+          >
+            {filterDate.toLocaleDateString("id-ID")} ✕
+          </button>
+        )}
 
         {/* List */}
         <div className="flex flex-col gap-4">
@@ -66,7 +91,7 @@ export default function RiwayatKemasanPage() {
                   </div>
                 ))}
               </dl>
-
+              {item.alert && <AlertBox type={item.alert.type} text={item.alert.text} className="mt-4" />}
               <BacaSuaraButton text={nutritionToSpeech(item)} className="mt-4" />
             </article>
           ))}
@@ -78,6 +103,15 @@ export default function RiwayatKemasanPage() {
           )}
         </div>
       </main>
+      <CalendarModal
+        open={calendarOpen}
+        value={filterDate ?? new Date()}
+        onClose={() => setCalendarOpen(false)}
+        onSelect={(d) => {
+          setFilterDate(d);
+          setCalendarOpen(false);
+        }}
+      />
     </div>
   );
 }

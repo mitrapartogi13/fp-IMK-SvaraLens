@@ -5,6 +5,7 @@ import Link from "next/link";
 import AppHeader from "../../components/AppHeader";
 import BacaSuaraButton from "../../components/BacaSuaraButton";
 import { getPackage, nutritionToSpeech } from "../../data/content";
+import AlertBox from "../../components/AlertBox";
 
 /** Detail Kemasan — nutrition facts for a scanned package + read aloud. */
 export default function DetailKemasanPage() {
@@ -46,6 +47,7 @@ export default function DetailKemasanPage() {
               </div>
             ))}
           </dl>
+          {item.alert && <AlertBox type={item.alert.type} text={item.alert.text} className="mt-4" />}
         </div>
 
         <BacaSuaraButton text={nutritionToSpeech(item)} className="mt-auto" />
