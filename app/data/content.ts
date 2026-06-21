@@ -32,6 +32,8 @@ export const DOCUMENTS: DocumentItem[] = [
       "Surat kuasa ini dibuat pada tanggal 7 Juni 2026.",
       "Yang bertanda tangan di bawah ini memberikan kuasa penuh kepada penerima kuasa untuk mengurus dokumen kepemilikan kendaraan bermotor.",
       "Kuasa ini berlaku sampai seluruh proses pengurusan selesai dilaksanakan.",
+      "Penerima kuasa berhak menandatangani dokumen, mengajukan permohonan, menyerahkan berkas persyaratan, menerima dokumen hasil pengurusan, serta melakukan tindakan administratif lain yang diperlukan sepanjang masih dalam ruang lingkup kuasa yang diberikan.",
+      "Demikian surat kuasa ini dibuat untuk dipergunakan sebagaimana mestinya dengan penuh tanggung jawab serta itikad baik dari kedua belah pihak."
     ],
   },
   {
