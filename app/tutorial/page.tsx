@@ -1,20 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState, type ComponentType, type SVGProps } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSettings } from "../context/SettingsContext";
 import { useSpeech } from "../hooks/useSpeech";
-import {
-  ArrowRightIcon,
-  BackIcon,
-  BigCheckIcon,
-  DoubleTapIcon,
-  SpeakerIcon,
-  SwipeHandIcon,
-} from "../components/Icons";
+import { ArrowRightIcon, BackIcon, BigCheckIcon, SpeakerIcon } from "../components/Icons";
+
+type StepImage = {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  /** Animation utility class that mimics the gesture being taught. */
+  animation: string;
+};
 
 type Step = {
-  Icon: ComponentType<SVGProps<SVGSVGElement>>;
+  image?: StepImage;
   title: string;
   description: string;
   ctaLabel: string;
@@ -27,24 +29,36 @@ type Step = {
 
 const STEPS: Step[] = [
   {
-    Icon: SwipeHandIcon,
+    image: {
+      src: "/ketuk.svg",
+      width: 58,
+      height: 70,
+      alt: "Ilustrasi tangan mengetuk layar",
+      animation: "animate-tap-press",
+    },
+    title: "KETUK 2X",
+    description:
+      "Ketuk sekali untuk memilih menu, ketuk lagi untuk membuka menu.",
+    ctaLabel: "COBA KETUK",
+    badge: "2x",
+    speak:
+      "Langkah satu dari tiga. Ketuk dua kali. Ketuk layar dua kali dengan cepat untuk membuka menu.",
+  },
+  {
+    image: {
+      src: "/geser.svg",
+      width: 80,
+      height: 84,
+      alt: "Ilustrasi tangan menggeser layar",
+      animation: "animate-swipe-slide",
+    },
     title: "GESER",
     description: "Geser jari ke KIRI atau KANAN untuk pindah menu.",
     ctaLabel: "COBA GESER",
     speak:
-      "Langkah satu dari tiga. Geser. Geser jari ke kiri atau kanan untuk pindah menu.",
+      "Langkah dua dari tiga. Geser. Geser jari ke kiri atau kanan untuk pindah menu.",
   },
   {
-    Icon: DoubleTapIcon,
-    title: "KETUK 2X",
-    description: "Ketuk layar DUA KALI dengan cepat untuk membuka menu.",
-    ctaLabel: "COBA KETUK",
-    badge: "2x",
-    speak:
-      "Langkah dua dari tiga. Ketuk dua kali. Ketuk layar dua kali dengan cepat untuk membuka menu.",
-  },
-  {
-    Icon: BigCheckIcon,
     title: "SELESAI",
     description: "Bagus! Anda siap menggunakan aplikasi.",
     ctaLabel: "MULAI APLIKASI",
@@ -99,8 +113,7 @@ export default function TutorialPage() {
           <button
             type="button"
             onClick={finish}
-            className="rounded-full border-[2.5px] border-line bg-paper px-5 py-2 text-sm font-black tracking-wide text-ink active:translate-y-[1px]"
-          >
+            className="rounded-full border-[2.5px] border-line bg-paper px-5 py-2 text-sm font-black tracking-wide text-ink active:translate-y-[1px]">
             {isLast ? "SELESAI" : "LEWATI"}
           </button>
         </div>
@@ -112,8 +125,7 @@ export default function TutorialPage() {
           aria-valuemax={100}
           aria-valuenow={Math.round(progressPct)}
           aria-label={`Langkah ${step + 1} dari ${STEPS.length}`}
-          className="mt-4 h-3.5 w-full overflow-hidden rounded-full border-[2px] border-line bg-[#d9d9d9]"
-        >
+          className="mt-4 h-3.5 w-full overflow-hidden rounded-full border-[2px] border-line bg-[#d9d9d9]">
           <div
             className="h-full rounded-full bg-[#00e5ff] transition-[width] duration-300 ease-out"
             style={{ width: `${progressPct}%` }}
@@ -134,8 +146,7 @@ export default function TutorialPage() {
         {/* Gesture card */}
         <article
           key={step}
-          className="flex w-full flex-1 animate-slide-in-right flex-col rounded-3xl border-[3px] border-line bg-paper p-4 shadow-[6px_6px_0_0_var(--c-line)]"
-        >
+          className="flex w-full flex-1 animate-slide-in-right flex-col rounded-3xl border-[3px] border-line bg-paper p-4 shadow-[6px_6px_0_0_var(--c-line)]">
           {/* Inner illustration frame */}
           <div className="relative flex aspect-[5/3] w-full items-center justify-center rounded-2xl border-[2px] border-line bg-frame">
             {/* Yellow 2x badge (step 2 only) */}
@@ -150,9 +161,18 @@ export default function TutorialPage() {
               <div className="flex size-28 items-center justify-center rounded-full border-[3px] border-line bg-black text-[60px] text-white shadow-[5px_5px_0_0_var(--c-line)]">
                 <BigCheckIcon strokeWidth={3.5} />
               </div>
-            ) : (
-              <current.Icon className="text-[88px] text-ink" />
-            )}
+            ) : current.image ? (
+              <div className="flex size-40 items-center justify-center rounded-full border-[3px] border-line bg-white shadow-[5px_5px_0_0_var(--c-line)]">
+                {/* eslint-disable-next-line @next/next/no-img-element -- local decorative SVG, no resizing needed */}
+                <img
+                  src={current.image.src}
+                  width={current.image.width}
+                  height={current.image.height}
+                  alt={current.image.alt}
+                  className={`h-24 w-auto ${current.image.animation}`}
+                />
+              </div>
+            ) : null}
           </div>
 
           {/* Title + description */}
@@ -168,8 +188,7 @@ export default function TutorialPage() {
           {/* Dots */}
           <div
             className="flex items-center justify-center gap-2 pb-2"
-            aria-hidden
-          >
+            aria-hidden>
             {STEPS.map((_, i) => {
               const active = i === step;
               return (
@@ -195,8 +214,7 @@ export default function TutorialPage() {
           <button
             type="button"
             onClick={next}
-            className="flex w-full items-center justify-center gap-3 rounded-full border-[3px] border-line bg-primary px-6 py-4 text-lg font-black uppercase tracking-wide text-ink shadow-[5px_5px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--c-line)]"
-          >
+            className="flex w-full items-center justify-center gap-3 rounded-full border-[3px] border-line bg-primary px-6 py-4 text-lg font-black uppercase tracking-wide text-ink shadow-[5px_5px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--c-line)]">
             {current.ctaLabel}
             <ArrowRightIcon className="text-[22px]" strokeWidth={3} />
           </button>
@@ -206,15 +224,13 @@ export default function TutorialPage() {
               type="button"
               onClick={prev}
               aria-label="Kembali ke langkah sebelumnya"
-              className="flex size-14 shrink-0 items-center justify-center rounded-full border-[3px] border-line bg-paper text-[24px] text-ink shadow-[4px_4px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0_0_var(--c-line)]"
-            >
+              className="flex size-14 shrink-0 items-center justify-center rounded-full border-[3px] border-line bg-paper text-[24px] text-ink shadow-[4px_4px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0_0_var(--c-line)]">
               <BackIcon strokeWidth={3} />
             </button>
             <button
               type="button"
               onClick={next}
-              className="flex flex-1 items-center justify-center gap-3 rounded-full border-[3px] border-line bg-primary px-6 py-4 text-lg font-black uppercase tracking-wide text-ink shadow-[5px_5px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--c-line)]"
-            >
+              className="flex flex-1 items-center justify-center gap-3 rounded-full border-[3px] border-line bg-primary px-6 py-4 text-lg font-black uppercase tracking-wide text-ink shadow-[5px_5px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--c-line)]">
               {current.ctaLabel}
               <ArrowRightIcon className="text-[22px]" strokeWidth={3} />
             </button>

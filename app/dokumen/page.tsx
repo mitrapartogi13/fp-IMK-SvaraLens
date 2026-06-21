@@ -28,7 +28,7 @@ function DokumenInner() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <AppHeader title="RIWAYAT PINDAI" />
+      <AppHeader title="RIWAYAT PINDAI" backHref="/beranda" />
 
       <main className="flex flex-1 flex-col gap-5 px-5 py-5">
         {/* Search */}

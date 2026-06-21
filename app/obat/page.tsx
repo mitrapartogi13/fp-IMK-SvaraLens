@@ -5,7 +5,7 @@ import { PillIcon } from "../components/Icons";
 export default function ObatPage() {
   return (
     <div className="flex flex-1 flex-col">
-      <AppHeader title="OBAT" showBack={false} />
+      <AppHeader title="OBAT" backHref="/beranda" />
 
       <main className="flex flex-1 flex-col items-center justify-center gap-6 px-8 text-center">
         <div className="flex size-32 items-center justify-center rounded-full bg-surface text-[64px] text-muted">

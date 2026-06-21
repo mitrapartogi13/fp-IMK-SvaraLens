@@ -31,7 +31,7 @@ export function SettingsIcon(props: IconProps) {
   return (
     <svg {...base(props)}>
       <circle cx="12" cy="12" r="3" />
-      <path d="M12 2.5 13.5 6l3.6-.8 1 3.5 3.4 1.6-2.4 2.7 2.4 2.7-3.4 1.6-1 3.5-3.6-.8L12 21.5 10.5 18l-3.6.8-1-3.5L2.5 13.7 4.9 11 2.5 8.3l3.4-1.6 1-3.5L10.5 6 12 2.5Z" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
     </svg>
   );
 }
@@ -288,40 +288,6 @@ export function HandWaveIcon(props: IconProps) {
   );
 }
 
-/**
- * Swipe gesture: a hand with arrows pointing left/right around it.
- * Designed to be displayed at very large size in the tutorial illustration.
- */
-export function SwipeHandIcon(props: IconProps) {
-  return (
-    <svg {...base(props)} strokeWidth={2.2}>
-      {/* Curved swipe motion arc above the hand */}
-      <path d="M7 7a5.5 5.5 0 0 1 10 0" />
-      <path d="M5.5 7 7 5.5 8.5 7" />
-      <path d="M18.5 7 17 5.5 15.5 7" />
-      {/* Hand silhouette */}
-      <path d="M10.5 10.5v3" />
-      <path d="M13 9.5v4" />
-      <path d="M15.5 10v3.5" />
-      <path d="M8 13.5v-2.5a1.2 1.2 0 0 1 2.4 0" />
-      <path d="M8 13.5v3a4 4 0 0 0 4 4h2a4 4 0 0 0 4-4v-3.5" />
-    </svg>
-  );
-}
-
-/** Double-tap: hand pointing index finger down with two ripple rings. */
-export function DoubleTapIcon(props: IconProps) {
-  return (
-    <svg {...base(props)} strokeWidth={2.2}>
-      {/* Ripple rings */}
-      <circle cx="12" cy="8" r="3.5" />
-      <circle cx="12" cy="8" r="6.5" strokeDasharray="2 2" />
-      {/* Hand */}
-      <path d="M12 11.5v5" />
-      <path d="M12 16.5l-1.6-1a1.4 1.4 0 0 0-1.9 1.9l1.7 2.4a4 4 0 0 0 3.3 1.7H15a4 4 0 0 0 4-4v-3a1.6 1.6 0 0 0-3.2 0M15.8 14.5v-1a1.6 1.6 0 0 0-3.2 0" />
-    </svg>
-  );
-}
 
 /** Big bold checkmark — for "selesai" success state. */
 export function BigCheckIcon(props: IconProps) {

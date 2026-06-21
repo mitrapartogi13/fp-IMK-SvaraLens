@@ -107,12 +107,34 @@ a[role="button"],
 }
 .animate-slide-in-right { animation: slide-in-right 0.32s ease-out both; }
 
+/* Tutorial gesture illustrations: mimic the gesture they teach. */
+@keyframes tap-press {
+  0%, 55%, 100% { transform: scale(1); }
+  15%           { transform: scale(0.8); }
+  35%           { transform: scale(1); }
+  45%           { transform: scale(0.8); }
+}
+.animate-tap-press {
+  transform-origin: center;
+  animation: tap-press 2.2s ease-in-out infinite;
+}
+
+@keyframes swipe-slide {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-14px); }
+  50%      { transform: translateX(0); }
+  75%      { transform: translateX(14px); }
+}
+.animate-swipe-slide { animation: swipe-slide 2.4s ease-in-out infinite; }
+
 /* Reduced-motion: respect user preference */
 @media (prefers-reduced-motion: reduce) {
   .animate-waveform,
   .animate-scan-pulse,
   .animate-fade-in,
-  .animate-slide-in-right {
+  .animate-slide-in-right,
+  .animate-tap-press,
+  .animate-swipe-slide {
     animation: none;
   }
 }
