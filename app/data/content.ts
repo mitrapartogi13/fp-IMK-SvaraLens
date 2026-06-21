@@ -103,3 +103,75 @@ export function nutritionToSpeech(item: PackageItem) {
   return item.alert ? `${base} ${item.alert.text}` : base;
 }
 
+export type MedicineItem = {
+  id: string;
+  name: string;
+  date: string;
+  loggedAt: string; // ISO date (YYYY-MM-DD)
+  dosage: string;
+  expiry: string;
+  paragraphs: string[];
+  alert?: { type: "warning" | "safe"; text: string };
+};
+
+export const MEDICINES: MedicineItem[] = [
+  {
+    id: "paracetamol",
+    name: "PARACETAMOL",
+    date: "Hari ini",
+    loggedAt: "2026-06-21",
+    dosage: "3 x 1 tablet sehari",
+    expiry: "Kedaluwarsa: Des 2028",
+    paragraphs: [
+      "Parasetamol 500 miligram.",
+      "Indikasi: Digunakan untuk meredakan demam, sakit kepala, dan nyeri ringan.",
+      "Dosis: Dewasa 1 sampai 2 tablet, 3 hingga 4 kali sehari. Anak-anak setengah sampai 1 tablet, 3 hingga 4 kali sehari.",
+      "Aturan pakai: Diminum setelah makan untuk menghindari iritasi lambung.",
+      "Peringatan: Jangan melebihi dosis yang dianjurkan. Hentikan penggunaan jika terjadi reaksi alergi.",
+    ],
+    alert: { type: "safe", text: "Gunakan sesuai dosis yang dianjurkan." },
+  },
+  {
+    id: "amoxicillin",
+    name: "AMOXICILLIN",
+    date: "Kemarin",
+    loggedAt: "2026-06-20",
+    dosage: "3 x 1 tablet sehari",
+    expiry: "Kedaluwarsa: Okt 2027",
+    paragraphs: [
+      "Amoksisilin 500 miligram.",
+      "Indikasi: Mengobati infeksi saluran pernapasan, kulit, dan saluran kemih akibat bakteri.",
+      "Dosis: Harus diminum sesuai resep dokter. Biasanya 1 tablet setiap 8 jam.",
+      "Aturan pakai: Dapat diminum dengan atau tanpa makanan. Harus dihabiskan untuk mencegah resistensi bakteri.",
+      "Peringatan: Hindari bagi pasien dengan riwayat alergi penisilin.",
+    ],
+    alert: { type: "warning", text: "Harus dihabiskan!" },
+  },
+  {
+    id: "antasida-doen",
+    name: "ANTASIDA DOEN",
+    date: "18 Juni 2026",
+    loggedAt: "2026-06-18",
+    dosage: "3 x 1 tablet sehari",
+    expiry: "Kedaluwarsa: Mar 2029",
+    paragraphs: [
+      "Antasida DOEN tablet kunyah.",
+      "Indikasi: Meredakan gejala maag, asam lambung tinggi, dan kembung.",
+      "Dosis: Dewasa 1 sampai 2 tablet, 3 hingga 4 kali sehari. Anak-anak setengah sampai 1 tablet.",
+      "Aturan pakai: Dikunyah terlebih dahulu sebelum ditelan, diminum 1 jam sebelum makan atau 2 jam setelah makan.",
+      "Peringatan: Hindari penggunaan terus-menerus selama lebih dari 2 minggu tanpa resep dokter.",
+    ],
+  },
+];
+
+export function getMedicine(id: string) {
+  return MEDICINES.find((m) => m.id === id);
+}
+
+export function medicineToSpeech(item: MedicineItem) {
+  const base =
+    `${item.name}. Dosis: ${item.dosage}. ${item.expiry}. ` +
+    item.paragraphs.join(" ");
+  return item.alert ? `${base} Peringatan: ${item.alert.text}` : base;
+}
+
