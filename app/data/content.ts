@@ -75,7 +75,6 @@ export const PACKAGES: PackageItem[] = [
   {
     id: "ultra-milk",
     name: "ULTRA MILK",
-    date: "Hari ini",
     loggedAt: "2026-06-20",
     summary: [
       { label: "Energi Total", value: "140 kkal" },
@@ -120,7 +119,6 @@ export const PACKAGES: PackageItem[] = [
     {
     id: "biskuit-gandum",
     name: "BISKUIT GANDUM",
-    date: "Kemarin",
     loggedAt: "2026-06-19",
     summary: [
       { label: "Energi Total", value: "150 kkal" },
