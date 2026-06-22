@@ -51,18 +51,25 @@ export function getDocument(id: string) {
   return DOCUMENTS.find((d) => d.id === id);
 }
 
-export type NutritionRow = { label: string; value: string };
+export type NutritionRow = { label: string; value: string; percent?: string };
 
 export type PackageItem = {
   id: string;
   name: string;
-  date: string;
-  /** ISO date (YYYY-MM-DD) — dipakai Kalender Riwayat untuk mencocokkan tanggal. */
   loggedAt: string;
+  summary: NutritionRow[];
   nutrition: NutritionRow[];
-  /** Status gizi opsional (mis. gula melebihi batas harian). */
+  vitamins?: NutritionRow[];
   alert?: { type: "warning" | "safe"; text: string };
 };
+
+export function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 export const PACKAGES: PackageItem[] = [
   {
@@ -70,24 +77,78 @@ export const PACKAGES: PackageItem[] = [
     name: "ULTRA MILK",
     date: "Hari ini",
     loggedAt: "2026-06-20",
-    nutrition: [
+    summary: [
       { label: "Energi Total", value: "140 kkal" },
       { label: "Lemak Total", value: "3.5 g" },
       { label: "Protein", value: "6 g" },
       { label: "Gula", value: "17 g" },
     ],
-    alert: { type: "warning", text: "Kadar gula tinggi!" },
+    nutrition: [
+      { label: "Energi Total", value: "140 kkal" },
+      { label: "Energi dari Lemak", value: "30 kkal" },
+      { label: "Lemak Total", value: "3.5 g", percent: "5%" },
+      { label: "Lemak Jenuh", value: "2.5 g", percent: "13%" },
+      { label: "Kolesterol", value: "12 mg", percent: "4%" },
+      { label: "Protein", value: "6 g", percent: "10%" },
+      { label: "Karbohidrat Total", value: "22 g", percent: "7%" },
+      { label: "Gula", value: "17 g" },
+      { label: "Natrium", value: "50 mg", percent: "3%" },
+      { label: "Kalium", value: "360 mg", percent: "8%" },
+    ],
+    vitamins: [
+      { label: "Vitamin A", value: "20%" },
+      { label: "Vitamin C", value: "8%" },
+      { label: "Vitamin D3", value: "6%" },
+      { label: "Vitamin K", value: "15%" },
+      { label: "Vitamin B1", value: "15%" },
+      { label: "Vitamin B2", value: "15%" },
+      { label: "Vitamin B3", value: "15%" },
+      { label: "Vitamin B5", value: "10%" },
+      { label: "Vitamin B6", value: "15%" },
+      { label: "Vitamin B12", value: "20%" },
+      { label: "Biotin", value: "20%" },
+      { label: "Kolin", value: "8%" },
+      { label: "Kalsium", value: "20%" },
+      { label: "Zat Besi", value: "2%" },
+      { label: "Zink", value: "6%" },
+      { label: "Magnesium", value: "6%" },
+      { label: "Fosfor", value: "25%" },
+      { label: "Selenium", value: "10%" },
+    ],
+    alert: { type: "warning", text: "Kadar gula melebihi 50% batas harian!" },
   },
-  {
+    {
     id: "biskuit-gandum",
     name: "BISKUIT GANDUM",
     date: "Kemarin",
     loggedAt: "2026-06-19",
-    nutrition: [
+    summary: [
       { label: "Energi Total", value: "150 kkal" },
       { label: "Lemak Total", value: "7 g" },
       { label: "Protein", value: "2 g" },
       { label: "Gula", value: "5 g" },
+    ],
+    nutrition: [
+      { label: "Energi Total", value: "150 kkal" },
+      { label: "Energi dari Lemak", value: "63 kkal" },
+      { label: "Lemak Total", value: "7 g", percent: "11%" },
+      { label: "Lemak Jenuh", value: "3 g", percent: "15%" },
+      { label: "Kolesterol", value: "0 mg", percent: "0%" },
+      { label: "Protein", value: "2 g", percent: "3%" },
+      { label: "Karbohidrat Total", value: "19 g", percent: "6%" },
+      { label: "Gula", value: "5 g" },
+      { label: "Serat Pangan", value: "1.5 g", percent: "6%" },
+      { label: "Natrium", value: "90 mg", percent: "4%" },
+    ],
+    vitamins: [
+      { label: "Vitamin A", value: "0%" },
+      { label: "Vitamin B1", value: "8%" },
+      { label: "Vitamin B2", value: "6%" },
+      { label: "Vitamin B6", value: "4%" },
+      { label: "Kalsium", value: "2%" },
+      { label: "Zat Besi", value: "4%" },
+      { label: "Magnesium", value: "3%" },
+      { label: "Fosfor", value: "5%" },
     ],
     alert: { type: "safe", text: "Kadar gula aman untuk dikonsumsi" },
   },
@@ -98,11 +159,11 @@ export function getPackage(id: string) {
 }
 
 export function nutritionToSpeech(item: PackageItem) {
-  const base =
+  return (
     `${item.name}. ` +
-    item.nutrition.map((n) => `${n.label} ${n.value}`).join(", ") +
-    ".";
-  return item.alert ? `${base} ${item.alert.text}` : base;
+    item.summary.map((n) => `${n.label} ${n.value}`).join(", ") +
+    "."
+  );
 }
 
 export type MedicineItem = {

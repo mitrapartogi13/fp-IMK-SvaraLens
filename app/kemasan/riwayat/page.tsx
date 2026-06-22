@@ -2,15 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import AppHeader from "../../components/AppHeader";
 import BacaSuaraButton from "../../components/BacaSuaraButton";
-import { CalendarIcon, MicIcon, ChevronRightIcon } from "../../components/Icons";
-import { PACKAGES, nutritionToSpeech } from "../../data/content";
+import { CalendarIcon, MicIcon, ChevronRightIcon, WaveformIcon } from "../../components/Icons";
+import { PACKAGES, nutritionToSpeech, formatDate } from "../../data/content";
 import AlertBox from "../../components/AlertBox";
 import CalendarModal from "../../components/CalendarModal";
 
 /** Riwayat Kemasan — searchable history of scanned packages. */
 export default function RiwayatKemasanPage() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [filterDate, setFilterDate] = useState<Date | null>(null);
@@ -51,9 +53,15 @@ export default function RiwayatKemasanPage() {
             >
               <CalendarIcon className="text-[24px] text-muted" />
             </button>
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-[24px] text-black">
+            
+            <button
+              type="button"
+              onClick={() => router.push("/kemasan/voice-search")}
+              aria-label="Cari dengan suara"
+              className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-[24px] text-black"
+            >
               <MicIcon />
-            </span>
+            </button>
           </div>
         </div>
 
@@ -76,7 +84,7 @@ export default function RiwayatKemasanPage() {
                   <h2 className="text-2xl font-black uppercase tracking-tight text-ink">
                     {item.name}
                   </h2>
-                  <p className="mt-1 text-base font-bold text-muted">{item.date}</p>
+                  <p className="mt-1 text-base font-bold text-muted">{formatDate(item.loggedAt)}</p>
                 </div>
                 <ChevronRightIcon className="mt-1 text-[26px] text-ink" />
               </Link>
@@ -84,7 +92,7 @@ export default function RiwayatKemasanPage() {
               <hr className="my-4 border-t-2 border-line" />
 
               <dl className="flex flex-col gap-2">
-                {item.nutrition.map((n) => (
+                {item.summary.map((n) => (
                   <div key={n.label} className="flex justify-between gap-4 text-lg font-black text-ink">
                     <dt>{n.label}</dt>
                     <dd>{n.value}</dd>
