@@ -90,7 +90,7 @@ export default function PengaturanPage() {
               value={settings.volume}
               onChange={(e) => update({ volume: Number(e.target.value) })}
               aria-label="Volume asisten AI"
-              className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-surface accent-primary"
+              className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-surface accent-primary volume-slider"
             />
             <span className="w-16 text-right text-2xl font-black text-ink">
               {settings.volume}%
