@@ -34,6 +34,7 @@
   --c-muted: #4b5563;                  /* Secondary text — bumped for AA */
   --c-line: #000000;                   /* All borders pure black */
   --c-frame: #ececec;                  /* Inner illustration frames */
+  --c-slider-outline: #000000;
 
   /* Runtime font scale (80%–200%), driven by Pengaturan. */
   --font-scale: 1;
@@ -47,6 +48,7 @@ html.dark {
   --c-muted: #d1d5db;
   --c-line: #ffd600;
   --c-frame: #1a1a1a;
+  --c-slider-outline: #ffffff;
 }
 
 html {
@@ -71,6 +73,44 @@ button,
 a[role="button"],
 [role="tab"] {
   touch-action: manipulation;
+}
+
+/* ----- Volume slider track outline ----- */
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+.volume-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--c-surface);
+  border: 2px solid var(--c-slider-outline);
+}
+.volume-slider::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--c-surface);
+  border: 2px solid var(--c-slider-outline);
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 2px solid var(--c-slider-outline);
+  cursor: pointer;
+}
+.volume-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 2px solid var(--c-slider-outline);
+  cursor: pointer;
 }
 
 /* ----- Brutalist utility shortcuts (used heavily across pages) ----- */
