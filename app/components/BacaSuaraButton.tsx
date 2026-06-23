@@ -24,7 +24,7 @@ export default function BacaSuaraButton({
       type="button"
       onClick={() => (speaking ? stop() : speak(text))}
       aria-pressed={speaking}
-      className={`flex w-full items-center justify-center gap-3 rounded-full border-[3px] border-line bg-primary px-6 py-4 text-xl font-black uppercase tracking-wide text-ink shadow-[5px_5px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--c-line)] ${className}`}
+      className={`flex w-full items-center justify-center gap-3 rounded-full border-[3px] border-line bg-primary px-6 py-4 text-xl font-black uppercase tracking-wide text-black shadow-[5px_5px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--c-line)] ${className}`}
     >
       {speaking ? (
         <PauseIcon className="text-[24px]" strokeWidth={3} />
