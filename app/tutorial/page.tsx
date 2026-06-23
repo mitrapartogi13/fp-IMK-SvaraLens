@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSettings } from "../context/SettingsContext";
+// import { useSettings } from "../context/SettingsContext"; // DISABLED with hasVisited gating
 import { useSpeech } from "../hooks/useSpeech";
 import { ArrowRightIcon, BackIcon, BigCheckIcon, SpeakerIcon } from "../components/Icons";
 
@@ -71,7 +71,7 @@ const STEPS: Step[] = [
 /** Gesture tutorial — 3 paginated steps shown on first visit. */
 export default function TutorialPage() {
   const router = useRouter();
-  const { update } = useSettings();
+  // const { update } = useSettings(); // DISABLED: see finish() — tutorial always shows
   const { speak } = useSpeech();
   const [step, setStep] = useState(0);
   const spokenStepRef = useRef<number>(-1);
@@ -81,7 +81,9 @@ export default function TutorialPage() {
   const progressPct = ((step + 1) / STEPS.length) * 100;
 
   function finish() {
-    update({ hasVisited: true });
+    // DISABLED: do not remember that the tutorial was completed, so it always
+    // shows again after the splash. Re-enable to skip the tutorial for repeat
+    // visitors: update({ hasVisited: true });
     router.replace("/beranda");
   }
 

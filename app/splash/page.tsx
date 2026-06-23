@@ -14,11 +14,12 @@ const WELCOME_TEXT =
  * - Speaks the welcome text once on first paint (Web Speech API).
  * - User advances by tapping or swiping right on the yellow CTA.
  * - Double-tapping anywhere replays the welcome message.
- * - Returning users (hasVisited) skip straight to /beranda after a short beat.
+ * - Always advances to /tutorial (the hasVisited skip is intentionally disabled
+ *   so every launch shows the tutorial).
  */
 export default function SplashPage() {
   const router = useRouter();
-  const { settings, ready } = useSettings();
+  const { ready } = useSettings();
   const { speak, supported } = useSpeech();
 
   // Track if we've spoken the intro yet, so React's strict mode double-mount
@@ -33,21 +34,23 @@ export default function SplashPage() {
     return () => clearTimeout(id);
   }, [ready, supported, speak]);
 
-  // Returning users (already saw tutorial) get a quick auto-skip.
-  useEffect(() => {
-    if (!ready || !settings.hasVisited) return;
-    const id = setTimeout(() => router.replace("/beranda"), 1400);
-    return () => clearTimeout(id);
-  }, [ready, settings.hasVisited, router]);
+  // DISABLED: returning-user auto-skip. We always force the tutorial after the
+  // splash, so this skip-to-dashboard behaviour is commented out.
+  // useEffect(() => {
+  //   if (!ready || !settings.hasVisited) return;
+  //   const id = setTimeout(() => router.replace("/beranda"), 1400);
+  //   return () => clearTimeout(id);
+  // }, [ready, settings.hasVisited, router]);
 
   // Guard so a swipe + its synthesized click don't navigate twice.
   const advancedRef = useRef(false);
   const advance = useCallback(() => {
     if (advancedRef.current) return;
     advancedRef.current = true;
-    const next = settings.hasVisited ? "/beranda" : "/tutorial";
-    router.replace(next);
-  }, [router, settings.hasVisited]);
+    // DISABLED: hasVisited gating. Always go to the tutorial after the splash.
+    // const next = settings.hasVisited ? "/beranda" : "/tutorial";
+    router.replace("/tutorial");
+  }, [router]);
 
   // --- Swipe-right detection on the yellow CTA --------------------------------
   // Uses Pointer Events so mouse-drag (desktop) and touch-swipe (mobile) behave
