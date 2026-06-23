@@ -114,7 +114,7 @@ export const PACKAGES: PackageItem[] = [
       { label: "Fosfor", value: "25%" },
       { label: "Selenium", value: "10%" },
     ],
-    alert: { type: "warning", text: "Kadar gula melebihi 50% batas harian!" },
+    alert: { type: "warning", text: "Kadar gula tinggi!" },
   },
     {
     id: "biskuit-gandum",
