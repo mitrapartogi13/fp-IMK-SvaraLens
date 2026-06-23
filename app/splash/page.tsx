@@ -40,21 +40,28 @@ export default function SplashPage() {
     return () => clearTimeout(id);
   }, [ready, settings.hasVisited, router]);
 
+  // Guard so a swipe + its synthesized click don't navigate twice.
+  const advancedRef = useRef(false);
   const advance = useCallback(() => {
+    if (advancedRef.current) return;
+    advancedRef.current = true;
     const next = settings.hasVisited ? "/beranda" : "/tutorial";
     router.replace(next);
   }, [router, settings.hasVisited]);
 
   // --- Swipe-right detection on the yellow CTA --------------------------------
-  const touchStartX = useRef<number | null>(null);
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
+  // Uses Pointer Events so mouse-drag (desktop) and touch-swipe (mobile) behave
+  // identically. `touch-action: pan-y` on the button (below) stops the mobile
+  // browser from claiming the horizontal swipe as a back-navigation gesture.
+  const pointerStartX = useRef<number | null>(null);
+  const onPointerDown = (e: React.PointerEvent) => {
+    pointerStartX.current = e.clientX;
   };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const dx = e.changedTouches[0].clientX - touchStartX.current;
-    touchStartX.current = null;
-    if (dx > 48) advance(); // ≥48px swipe to the right
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (pointerStartX.current === null) return;
+    const dx = e.clientX - pointerStartX.current;
+    pointerStartX.current = null;
+    if (dx > 48) advance(); // ≥48px swipe/drag to the right
   };
 
   // --- Double-tap to replay the audio welcome --------------------------------
@@ -134,8 +141,9 @@ export default function SplashPage() {
             e.stopPropagation();
             advance();
           }}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          style={{ touchAction: "pan-y" }}
           aria-label="Geser ke kanan atau ketuk untuk mulai"
           className="flex w-full items-center gap-4 rounded-2xl border-[3px] border-line bg-primary px-5 py-5 text-left text-ink shadow-[6px_6px_0_0_var(--c-line)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-[3px_3px_0_0_var(--c-line)]"
         >
