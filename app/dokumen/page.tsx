@@ -1,130 +1,100 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import AppHeader from "../components/AppHeader";
-import {
-  WaveformIcon,
-  MicIcon,
-  DocumentIcon,
-  ChevronRightIcon,
-  SearchXIcon,
-  SpeakerIcon,
-  AssistantIcon,
-} from "../components/Icons";
-import { DOCUMENTS } from "../data/content";
+import { BackIcon, CameraIcon, HistoryIcon, SettingsIcon } from "../components/Icons";
 
-function DokumenInner() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get("q") ?? "");
 
-  const trimmed = query.trim().toLowerCase();
-  const results = trimmed
-    ? DOCUMENTS.filter((d) => d.name.toLowerCase().includes(trimmed))
-    : DOCUMENTS;
-  const noResults = trimmed.length > 0 && results.length === 0;
+export default function ScanDokumenPage() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hasCamera, setHasCamera] = useState(false);
+
+  useEffect(() => {
+    let stream: MediaStream | null = null;
+    let cancelled = false;
+
+    async function start() {
+      if (!navigator.mediaDevices?.getUserMedia) return;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+          audio: false,
+        });
+        if (cancelled) {
+          stream.getTracks().forEach((t) => t.stop());
+          return;
+        }
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          setHasCamera(true);
+        }
+      } catch {
+        
+      }
+    }
+    start();
+
+    return () => {
+      cancelled = true;
+      stream?.getTracks().forEach((t) => t.stop());
+    };
+  }, []);
 
   return (
-    <div className="flex flex-1 flex-col">
-      <AppHeader title="RIWAYAT PINDAI" backHref="/beranda" />
+    <div className="relative flex flex-1 flex-col overflow-hidden bg-gradient-to-b from-zinc-700 to-zinc-900">
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        muted
+        className={`absolute inset-0 h-full w-full object-cover ${hasCamera ? "" : "hidden"}`}
+      />
 
-      <main className="flex flex-1 flex-col gap-5 px-5 py-5">
-        {/* Search */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="cari-berkas" className="text-lg font-black tracking-wide text-ink">
-            CARI BERKAS
-          </label>
-          <div className="flex items-center gap-2 rounded-xl border-2 border-line bg-paper px-4 py-3">
-            <input
-              id="cari-berkas"
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="CARI DOKUMEN..."
-              className="min-w-0 flex-1 bg-transparent text-lg font-bold text-ink placeholder:text-muted focus:outline-none"
-            />
-            <WaveformIcon className="text-[24px] text-muted" aria-hidden />
-            <button
-              type="button"
-              onClick={() => router.push("/dokumen/voice-search")}
-              aria-label="Cari dengan suara"
-              className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary text-[24px] text-black"
-            >
-              <MicIcon />
-            </button>
-          </div>
-        </div>
-
-        {noResults ? (
-          <NoResults onReset={() => setQuery("")} />
-        ) : (
-          <ul className="flex flex-col gap-4">
-            {results.map((doc) => (
-              <li key={doc.id}>
-                <Link
-                  href={`/dokumen/${doc.id}`}
-                  className="flex items-center gap-4 rounded-xl border-2 border-line bg-paper p-3 active:bg-surface"
-                >
-                  <span className="flex h-20 w-[60px] shrink-0 items-center justify-center rounded-md border-2 border-line bg-surface text-[28px] text-muted">
-                    <DocumentIcon />
-                  </span>
-                  <span className="flex-1 text-xl font-black leading-tight text-ink">
-                    {doc.name}
-                  </span>
-                  <ChevronRightIcon className="text-[26px] text-ink" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </main>
-    </div>
-  );
-}
-
-function NoResults({ onReset }: { onReset: () => void }) {
-  return (
-    <div className="flex flex-1 animate-fade-in flex-col items-center justify-center gap-5 py-6 text-center">
-      <div className="relative">
-        <div className="flex size-40 items-center justify-center rounded-full bg-surface text-[80px] text-muted">
-          <SearchXIcon />
-        </div>
-        <span className="absolute -right-1 top-1 flex size-12 items-center justify-center rounded-full bg-primary text-[24px] text-black">
-          <SpeakerIcon />
-        </span>
-      </div>
-
-      <h2 className="text-2xl font-black uppercase tracking-tight text-heading">
-        Hasil Tidak Ditemukan
-      </h2>
-      <p className="italic text-lg font-bold text-muted">Coba kata kunci lain</p>
-
-      <div className="flex items-center gap-3 rounded-2xl border-2 border-line bg-paper px-4 py-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-[22px] text-black">
-          <AssistantIcon />
-        </span>
-        <p className="text-base font-bold text-ink">
-          &ldquo;Maaf, hasil tidak ditemukan&rdquo;
-        </p>
-      </div>
-
-      <button
-        type="button"
-        onClick={onReset}
-        className="w-full rounded-full bg-primary px-6 py-4 text-xl font-black uppercase tracking-wide text-black shadow-[0_4px_0_0_var(--color-primary-press)] active:translate-y-0.5"
+      {/* Floating back */}
+      <Link
+        href="/beranda"
+        aria-label="Kembali"
+        className="absolute left-4 top-4 z-20 flex size-14 items-center justify-center rounded-full bg-black/70 text-[28px] text-white backdrop-blur"
       >
-        Cari Ulang
-      </button>
-    </div>
-  );
-}
+        <BackIcon />
+      </Link>
 
-export default function DokumenPage() {
-  return (
-    <Suspense fallback={null}>
-      <DokumenInner />
-    </Suspense>
+      {/* Floating settings */}
+      <Link
+        href="/pengaturan"
+        aria-label="Pengaturan"
+        className="absolute right-4 top-4 z-20 flex size-14 items-center justify-center rounded-full bg-black/70 text-[28px] text-white backdrop-blur"
+      >
+        <SettingsIcon />
+      </Link>
+
+      {/* Instruction pill */}
+      <div className="z-10 flex justify-center pt-20">
+        <div className="rounded-full border-2 border-black bg-white px-6 py-3 text-base font-black tracking-wide text-black shadow-lg">
+          ARAHKAN KE DOKUMEN
+        </div>
+      </div>
+
+      {/* Scan reticle */}
+      <div className="z-10 mx-10 my-auto aspect-square rounded-2xl border-4 border-primary animate-scan-pulse" />
+
+      {/* Bottom action overlay */}
+      <div className="z-10 mt-auto flex gap-3 rounded-t-3xl bg-black p-4">
+        <Link
+          href="/dokumen/scan-success"
+          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-base font-black text-black active:translate-y-0.5"
+        >
+          <CameraIcon className="text-[24px]" />
+          AMBIL GAMBAR
+        </Link>
+        <Link
+          href="/dokumen/riwayat"
+          className="flex flex-1 items-center justify-center gap-2 rounded-full border-2 border-white px-4 py-4 text-base font-black text-white active:translate-y-0.5"
+        >
+          <HistoryIcon className="text-[24px]" />
+          RIWAYAT
+        </Link>
+      </div>
+    </div>
   );
 }

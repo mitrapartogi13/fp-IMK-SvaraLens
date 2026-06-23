@@ -1,23 +1,103 @@
-import AppHeader from "../components/AppHeader";
-import { PillIcon } from "../components/Icons";
+"use client";
 
-/** Obat — placeholder tab (feature not yet available). */
-export default function ObatPage() {
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { BackIcon, CameraIcon, HistoryIcon, SettingsIcon } from "../components/Icons";
+
+/**
+ * Scan Obat — live camera view with a pulsing scan reticle. Falls back to a
+ * dark placeholder surface when the camera is unavailable.
+ */
+export default function ScanObatPage() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hasCamera, setHasCamera] = useState(false);
+
+  useEffect(() => {
+    let stream: MediaStream | null = null;
+    let cancelled = false;
+
+    async function start() {
+      if (!navigator.mediaDevices?.getUserMedia) return;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+          audio: false,
+        });
+        if (cancelled) {
+          stream.getTracks().forEach((t) => t.stop());
+          return;
+        }
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          setHasCamera(true);
+        }
+      } catch {
+        /* no camera / permission denied → keep placeholder */
+      }
+    }
+    start();
+
+    return () => {
+      cancelled = true;
+      stream?.getTracks().forEach((t) => t.stop());
+    };
+  }, []);
+
   return (
-    <div className="flex flex-1 flex-col">
-      <AppHeader title="OBAT" backHref="/beranda" />
+    <div className="relative flex flex-1 flex-col overflow-hidden bg-gradient-to-b from-zinc-700 to-zinc-900">
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        muted
+        className={`absolute inset-0 h-full w-full object-cover ${hasCamera ? "" : "hidden"}`}
+      />
 
-      <main className="flex flex-1 flex-col items-center justify-center gap-6 px-8 text-center">
-        <div className="flex size-32 items-center justify-center rounded-full bg-surface text-[64px] text-muted">
-          <PillIcon />
+      {/* Floating back */}
+      <Link
+        href="/beranda"
+        aria-label="Kembali"
+        className="absolute left-4 top-4 z-20 flex size-14 items-center justify-center rounded-full bg-black/70 text-[28px] text-white backdrop-blur"
+      >
+        <BackIcon />
+      </Link>
+
+      {/* Floating settings */}
+      <Link
+        href="/pengaturan"
+        aria-label="Pengaturan"
+        className="absolute right-4 top-4 z-20 flex size-14 items-center justify-center rounded-full bg-black/70 text-[28px] text-white backdrop-blur"
+      >
+        <SettingsIcon />
+      </Link>
+
+      {/* Instruction pill */}
+      <div className="z-10 flex justify-center pt-20">
+        <div className="rounded-full border-2 border-black bg-white px-6 py-3 text-base font-black tracking-wide text-black shadow-lg">
+          ARAHKAN KE OBAT
         </div>
-        <h2 className="text-2xl font-black uppercase tracking-tight text-heading">
-          Segera Hadir
-        </h2>
-        <p className="max-w-xs text-lg font-bold text-muted">
-          Fitur pemindai obat sedang kami siapkan. Nantikan pembaruan berikutnya.
-        </p>
-      </main>
+      </div>
+
+      {/* Scan reticle */}
+      <div className="z-10 mx-10 my-auto aspect-square rounded-2xl border-4 border-primary animate-scan-pulse" />
+
+      {/* Bottom action overlay */}
+      <div className="z-10 mt-auto flex gap-3 rounded-t-3xl bg-black p-4">
+        <Link
+          href="/obat/scan-success"
+          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-base font-black text-black active:translate-y-0.5"
+        >
+          <CameraIcon className="text-[24px]" />
+          AMBIL GAMBAR
+        </Link>
+        <Link
+          href="/obat/riwayat"
+          className="flex flex-1 items-center justify-center gap-2 rounded-full border-2 border-white px-4 py-4 text-base font-black text-white active:translate-y-0.5"
+        >
+          <HistoryIcon className="text-[24px]" />
+          RIWAYAT
+        </Link>
+      </div>
     </div>
   );
 }

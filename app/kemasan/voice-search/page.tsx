@@ -16,14 +16,14 @@ export default function VoiceSearchPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace(`/dokumen/riwayat?q=${encodeURIComponent("Surat")}`);
+      router.replace(`/kemasan/ultra-milk`);
     }, 3000);
     return () => clearTimeout(timer);
   }, [router]);
 
   return (
     <div className="flex flex-1 flex-col">
-      <AppHeader title="RIWAYAT DOKUMEN" />
+      <AppHeader title="RIWAYAT KEMASAN" />
 
       <main className="flex flex-1 flex-col items-center justify-center gap-10 px-8 text-center">
         <div className="flex size-44 items-center justify-center rounded-full border-2 border-line bg-primary text-[80px] text-black animate-scan-pulse">
@@ -47,7 +47,7 @@ export default function VoiceSearchPage() {
 
         <button
           type="button"
-          onClick={() => router.replace("/dokumen")}
+          onClick={() => router.replace("/kemasan")}
           className="w-full rounded-full bg-primary px-6 py-5 text-xl font-black uppercase tracking-wide text-black shadow-[0_4px_0_0_var(--color-primary-press)] active:translate-y-0.5"
         >
           Batal
