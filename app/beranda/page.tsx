@@ -112,8 +112,8 @@ export default function BerandaPage() {
 
         {/* Yellow instructional tip bar */}
         <div className="flex items-center gap-3 rounded-2xl border-[3px] border-line bg-primary px-4 py-3 shadow-[4px_4px_0_0_var(--c-line)]">
-          <HandWaveIcon className="shrink-0 text-[30px] text-ink" />
-          <p className="text-sm font-black leading-snug text-ink">
+          <HandWaveIcon className="shrink-0 text-[30px] text-black" />
+          <p className="text-sm font-black leading-snug text-black">
             Geser untuk memilih menu.
             <br />
             Ketuk dua kali untuk membuka.
