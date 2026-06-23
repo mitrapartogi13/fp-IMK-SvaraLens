@@ -57,7 +57,7 @@ export default function ScanKemasanPage() {
       <Link
         href="/beranda"
         aria-label="Kembali"
-        className="absolute left-4 top-4 z-10 flex size-14 items-center justify-center rounded-full bg-black/70 text-[28px] text-white backdrop-blur"
+        className="absolute left-4 top-4 z-20 flex size-14 items-center justify-center rounded-full bg-black/70 text-[28px] text-white backdrop-blur"
       >
         <BackIcon />
       </Link>
@@ -66,7 +66,7 @@ export default function ScanKemasanPage() {
       <Link
         href="/pengaturan"
         aria-label="Pengaturan"
-        className="absolute right-4 top-4 z-10 flex size-14 items-center justify-center rounded-full bg-black/70 text-[28px] text-white backdrop-blur"
+        className="absolute right-4 top-4 z-20 flex size-14 items-center justify-center rounded-full bg-black/70 text-[28px] text-white backdrop-blur"
       >
         <SettingsIcon />
       </Link>

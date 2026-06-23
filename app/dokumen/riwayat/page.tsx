@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import AppHeader from "../../components/AppHeader";
@@ -20,6 +20,11 @@ function DokumenInner() {
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
 
+  const currentQueryParam = searchParams.get("q") ?? "";
+  useEffect(() => {
+    setQuery(currentQueryParam);
+  }, [currentQueryParam]);
+
   const trimmed = query.trim().toLowerCase();
   const results = trimmed
     ? DOCUMENTS.filter((d) => d.name.toLowerCase().includes(trimmed))
@@ -28,10 +33,10 @@ function DokumenInner() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <AppHeader title="RIWAYAT PINDAI" backHref="/beranda" />
+      <AppHeader title="RIWAYAT DOKUMEN" backHref="/dokumen" />
 
       <main className="flex flex-1 flex-col gap-5 px-5 py-5">
-        {/* Search */}
+        {/* Pencarian */}
         <div className="flex flex-col gap-2">
           <label htmlFor="cari-berkas" className="text-lg font-black tracking-wide text-ink">
             CARI BERKAS
@@ -57,6 +62,7 @@ function DokumenInner() {
           </div>
         </div>
 
+        {/* List Hasil atau Tampilan Kosong */}
         {noResults ? (
           <NoResults onReset={() => setQuery("")} />
         ) : (

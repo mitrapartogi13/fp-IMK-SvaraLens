@@ -16,14 +16,14 @@ export default function VoiceSearchPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace(`/dokumen?q=${encodeURIComponent("Surat")}`);
+      router.replace(`/dokumen/riwayat?q=${encodeURIComponent("Surat")}`);
     }, 3000);
     return () => clearTimeout(timer);
   }, [router]);
 
   return (
     <div className="flex flex-1 flex-col">
-      <AppHeader title="RIWAYAT PINDAI" />
+      <AppHeader title="RIWAYAT DOKUMEN" />
 
       <main className="flex flex-1 flex-col items-center justify-center gap-10 px-8 text-center">
         <div className="flex size-44 items-center justify-center rounded-full border-2 border-line bg-primary text-[80px] text-black animate-scan-pulse">
