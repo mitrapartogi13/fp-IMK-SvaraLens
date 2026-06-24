@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AccessibleLink from "./AccessibleLink";
 import { DocumentIcon, PillIcon, PackageIcon } from "./Icons";
 
 type Tab = {
@@ -40,9 +40,10 @@ export default function BottomNav() {
         const isActive =
           pathname === match || pathname.startsWith(`${match}/`);
         return (
-          <Link
+          <AccessibleLink
             key={key}
             href={href}
+            speakText={label}
             aria-current={isActive ? "page" : undefined}
             aria-label={label}
             className={[
@@ -53,7 +54,7 @@ export default function BottomNav() {
           >
             <Icon className="text-[30px]" strokeWidth={2.4} />
             <span className="text-sm font-black tracking-wide">{label}</span>
-          </Link>
+          </AccessibleLink>
         );
       })}
     </nav>

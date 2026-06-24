@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import AccessibleButton from "./AccessibleButton";
+import AccessibleLink from "./AccessibleLink";
 import { BackIcon, SettingsIcon } from "./Icons";
 
 /**
@@ -26,22 +27,23 @@ export default function AppHeader({
       <div className="flex w-12 shrink-0 items-center">
         {showBack &&
           (backHref ? (
-            <Link
+            <AccessibleLink
               href={backHref}
               aria-label="Kembali"
               className="flex size-12 items-center justify-center rounded-md text-[28px] text-ink hover:bg-paper"
             >
               <BackIcon strokeWidth={2.6} />
-            </Link>
+            </AccessibleLink>
           ) : (
-            <button
+            <AccessibleButton
               type="button"
+              speakText="Kembali"
               onClick={() => router.back()}
               aria-label="Kembali"
               className="flex size-12 items-center justify-center rounded-md text-[28px] text-ink hover:bg-paper"
             >
               <BackIcon strokeWidth={2.6} />
-            </button>
+            </AccessibleButton>
           ))}
       </div>
 
@@ -53,13 +55,13 @@ export default function AppHeader({
 
       <div className="flex w-12 shrink-0 items-center justify-end">
         {showGear && (
-          <Link
+          <AccessibleLink
             href="/pengaturan"
             aria-label="Pengaturan"
             className="flex size-12 items-center justify-center rounded-md text-[28px] text-ink hover:bg-paper"
           >
             <SettingsIcon strokeWidth={2.6} />
-          </Link>
+          </AccessibleLink>
         )}
       </div>
     </header>

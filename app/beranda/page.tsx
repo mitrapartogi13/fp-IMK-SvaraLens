@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, type ComponentType, type SVGProps } from "react";
 import { useSpeech } from "../hooks/useSpeech";
+import AccessibleLink from "../components/AccessibleLink";
 import {
   DocumentIcon,
   HandWaveIcon,
@@ -64,13 +64,13 @@ export default function BerandaPage() {
       {/* ===== Top bar ===== */}
       <header className="flex items-center justify-between border-b-[3px] border-line bg-surface px-5 py-4">
         <h1 className="text-2xl font-black tracking-wide text-ink">SVARALENS</h1>
-        <Link
+        <AccessibleLink
           href="/pengaturan"
           aria-label="Pengaturan"
           className="flex size-11 items-center justify-center rounded-md text-[28px] text-ink hover:bg-paper"
         >
           <SettingsIcon strokeWidth={2.6} />
-        </Link>
+        </AccessibleLink>
       </header>
 
       <main className="flex flex-1 flex-col gap-5 px-5 py-5">
@@ -91,9 +91,10 @@ export default function BerandaPage() {
         {/* 2x2 grid */}
         <nav aria-label="Menu utama" className="grid grid-cols-2 gap-4">
           {TILES.map(({ href, Icon, lines, speak: label }) => (
-            <Link
+            <AccessibleLink
               key={href}
               href={href}
+              speakText={label}
               aria-label={label}
               className="group flex aspect-square flex-col justify-between rounded-2xl border-[3px] border-line bg-paper p-4 shadow-[5px_5px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--c-line)]"
             >
@@ -106,7 +107,7 @@ export default function BerandaPage() {
                   {lines[1]}
                 </span>
               </div>
-            </Link>
+            </AccessibleLink>
           ))}
         </nav>
 

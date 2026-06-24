@@ -1,6 +1,7 @@
 "use client";
 
 import { useSpeech } from "../hooks/useSpeech";
+import AccessibleButton from "./AccessibleButton";
 import { SpeakerIcon, PauseIcon } from "./Icons";
 
 /**
@@ -20,8 +21,9 @@ export default function BacaSuaraButton({
   const { speak, stop, speaking } = useSpeech();
 
   return (
-    <button
+    <AccessibleButton
       type="button"
+      speakText={speaking ? "Hentikan" : label}
       onClick={() => (speaking ? stop() : speak(text))}
       aria-pressed={speaking}
       className={`flex w-full items-center justify-center gap-3 rounded-full border-[3px] border-line bg-primary px-6 py-4 text-xl font-black uppercase tracking-wide text-black shadow-[5px_5px_0_0_var(--c-line)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0_0_var(--c-line)] ${className}`}
@@ -32,6 +34,6 @@ export default function BacaSuaraButton({
         <SpeakerIcon className="text-[24px]" strokeWidth={3} />
       )}
       {speaking ? "HENTIKAN" : label}
-    </button>
+    </AccessibleButton>
   );
 }
