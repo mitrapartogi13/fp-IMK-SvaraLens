@@ -49,7 +49,7 @@ export default function BottomNav() {
             className={[
               "flex min-h-[88px] flex-col items-center justify-center gap-1.5 py-3 transition-colors",
               i > 0 ? "border-l-[3px] border-line" : "",
-              isActive ? "bg-primary text-ink" : "bg-paper text-ink",
+              isActive ? "bg-primary text-black" : "bg-paper text-ink",
             ].join(" ")}
           >
             <Icon className="text-[30px]" strokeWidth={2.4} />
